@@ -1,0 +1,493 @@
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    margin: 0;
+    background: #FFE8D8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* 背景裝飾：小番茄 */
+body::before, body::after {
+    content: '';
+    position: absolute;
+    background: url('assets/small_tomato.png') no-repeat;
+    background-size: 40px;
+    width: 40px;
+    height: 40px;
+    opacity: 0.3;
+}
+
+body::before {
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+}
+
+body::after {
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%);
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    background: #FFAB91;
+    padding: 12px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item {
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.nav-item.active {
+    background: #EF6C00;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+h1, h2 {
+    color: #5D4037;
+    font-size: 24px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+h1::after, h2::after {
+    content: '🍅';
+    position: absolute;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.character {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    margin: 20px 0;
+}
+
+.character img {
+    width: 150px;
+    transition: transform 0.3s ease;
+}
+
+.character img[src*="tomato_working.png"] {
+    animation: wiggle 2s infinite ease-in-out;
+}
+
+@keyframes wiggle {
+    0% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.1) rotate(5deg); }
+    50% { transform: scale(1) rotate(0deg); }
+    75% { transform: scale(1.1) rotate(-5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.overview {
+    background: #FFF3E0;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.overview p {
+    color: #6D4C41;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.actions button, .actions select {
+    padding: 12px 24px;
+    background: #FFAB91;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+.actions button:hover, .actions select:hover {
+    background: #EF6C00;
+    transform: scale(1.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.actions button:active {
+    transform: scale(0.95);
+}
+
+.actions select {
+    background: #FFCA28;
+    color: #5D4037;
+}
+
+#message {
+    color: #6D4C41;
+    font-size: 16px;
+    margin: 15px 0;
+    padding: 10px;
+    background: #FFF3E0;
+    border-radius: 10px;
+}
+
+/* 彈窗樣式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #FFF3E0;
+    border-radius: 20px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: popIn 0.3s ease-in-out;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-content h2 {
+    color: #5D4037;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    display: block;
+    margin: 15px 0;
+    color: #6D4C41;
+    font-size: 16px;
+}
+
+.modal-content input[type="datetime-local"] {
+    padding: 8px;
+    border: 1px solid #D7CCC8;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: #5D4037;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.modal-actions button:first-child {
+    background: #FFAB91;
+    color: white;
+}
+
+.modal-actions button:first-child:hover {
+    background: #EF6C00;
+    transform: scale(1.1);
+}
+
+.modal-actions button:last-child {
+    background: #EF9A9A;
+    color: white;
+}
+
+.modal-actions button:last-child:hover {
+    background: #E57373;
+    transform: scale(1.1);
+}
+
+/* KPI Card 樣式 */
+.kpi-card {
+    background: #FFF3E0;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.kpi-card p {
+    color: #6D4C41;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.chart, .weekly-chart {
+    margin: 30px 0;
+    padding: 20px;
+    background: #FFF3E0;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.chart p, .weekly-chart p {
+    color: #5D4037;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.chart-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.chart-controls button {
+    padding: 8px 16px;
+    background: #FFAB91;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.chart-controls button:hover {
+    background: #EF6C00;
+    transform: scale(1.1);
+}
+
+
+#challenge-list {
+    margin-top: 20px;
+}
+
+.challenge-item {
+    background: #FFF3E0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    color: #6D4C41;
+}
+
+.challenge-item .progress-bar {
+    width: 100%;
+    background: #D7CCC8;
+    border-radius: 10px;
+    height: 10px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.challenge-item .progress {
+    height: 100%;
+    background: #FFAB91;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.challenge-item button {
+    padding: 8px 16px;
+    background: #A5D6A7;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.challenge-item button:hover {
+    background: #7CB342;
+}
+
+.challenge-animation {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    font-size: 24px;
+    color: #EF6C00;
+    animation: celebrate 2s ease-in-out forwards; /* 使用 forwards 確保動畫結束後保持最後狀態 */
+}
+
+.challenge-animation.active {
+    display: block;
+}
+
+@keyframes celebrate {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; display: none; }
+}
+
+#settings label {
+    display: block;
+    margin: 15px 0;
+    color: #6D4C41;
+    font-size: 16px;
+}
+
+#settings select {
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #D7CCC8;
+    background: #FFF3E0;
+    color: #5D4037;
+}
+
+#settings button {
+    padding: 12px 24px;
+    background: #FFAB91;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin: 10px;
+}
+
+#settings button:hover {
+    background: #EF6C00;
+    transform: scale(1.1);
+}
+
+#settings .reset-btn {
+    background: #EF9A9A;
+}
+
+#settings .reset-btn:hover {
+    background: #E57373;
+}
+
+.chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: #FFF3E0;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.chart canvas {
+    max-width: 300px; /* 控制圖表大小 */
+    max-height: 300px;
+}
+
+#challenge-list {
+    margin-top: 20px;
+    max-height: 400px; /* 設置固定高度，根據需要調整 */
+    overflow-y: auto; /* 啟用垂直滾動條 */
+    padding-right: 10px; /* 避免內容被滾動條遮擋 */
+}
+
+/* 自訂滾動條樣式（適用於 Webkit 瀏覽器，如 Chrome、Safari） */
+#challenge-list::-webkit-scrollbar {
+    width: 8px; /* 滾動條寬度 */
+}
+
+#challenge-list::-webkit-scrollbar-track {
+    background: #FFF3E0; /* 滾動條背景色，與挑戰項目的背景一致 */
+    border-radius: 10px;
+}
+
+#challenge-list::-webkit-scrollbar-thumb {
+    background: #FFAB91; /* 滾動條滑塊顏色，與主題色一致 */
+    border-radius: 10px;
+}
+
+#challenge-list::-webkit-scrollbar-thumb:hover {
+    background: #EF6C00; /* 滑鼠懸停時的顏色 */
+}
+
+#claim-all-btn {
+    padding: 10px 20px;
+    background: #FFAB91;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+#claim-all-btn:hover {
+    background: #EF6C00;
+    transform: scale(1.1);
+}
+
+#claim-all-btn:active {
+    transform: scale(0.95);
+}

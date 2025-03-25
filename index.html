@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加班小番茄</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 頂部導航 -->
+        <nav class="navbar">
+            <span class="nav-item active" onclick="showPage('home')">首頁</span>
+            <span class="nav-item" onclick="showPage('stats')">統計</span>
+            <span class="nav-item" onclick="showPage('challenges')">挑戰</span>
+            <span class="nav-item" onclick="showPage('settings')">設定</span>
+        </nav>
+
+        <!-- 首頁：加班記錄與概覽 -->
+        <div id="home" class="page active">
+            <h1>加班小番茄</h1>
+            <div class="character">
+                <img src="assets/tomato_default.png" alt="加班番茄" id="tomato-img">
+            </div>
+            <div class="overview">
+                <p>今日加班時數：<span id="today-hours">0時0分</span></p>
+                <p>本週加班時數：<span id="week-hours">0時0分</span></p>
+                <p>本月總計：<span id="month-hours">0時0分</span></p>
+            </div>
+            <div class="actions">
+                <select id="overtime-type">
+                    <option value="公司加班">公司加班</option>
+                    <option value="在家加班">在家加班</option>
+                    <option value="出差加班">出差加班</option>
+                </select>
+                <button id="start-btn" onclick="startOvertime()">開始加班</button>
+                <button onclick="openManualEntryModal()">手動記錄</button>
+            </div>
+            <p id="message">點擊「開始加班」來記錄吧！</p>
+        </div>
+
+        <!-- 手動記錄彈窗 -->
+        <div id="manual-entry-modal" class="modal">
+            <div class="modal-content">
+                <h2>手動記錄加班時間</h2>
+                <div id="start-time-step">
+                    <label>開始時間：
+                        <input type="datetime-local" id="manual-start-time">
+                    </label>
+                    <div class="modal-actions">
+                        <button onclick="confirmStartTime()">確認開始時間</button>
+                        <button onclick="closeManualEntryModal()">取消</button>
+                    </div>
+                </div>
+                <div id="end-time-step" style="display: none;">
+                    <label>結束時間：
+                        <input type="datetime-local" id="manual-end-time">
+                    </label>
+                    <div class="modal-actions">
+                        <button onclick="submitManualEntry()">確認</button>
+                        <button onclick="backToStartTime()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 統計頁：數據分析 -->
+        <div id="stats" class="page">
+            <h2>加班統計</h2>
+            <div class="kpi-card">
+                <p>今日加班：<span id="kpi-today-compare">0%</span></p>
+                <p>本週加班：<span id="kpi-week-compare">0%</span></p>
+            </div>
+            <div class="chart">
+                <canvas id="type-chart"></canvas>
+                <p>本月加班：<span id="total-hours">0時0分</span></p>
+            </div>
+            <div class="weekly-chart">
+                <div class="chart-controls">
+                    <button onclick="StatsManager.prevWeek()">◄ 前一週</button>
+                    <button onclick="StatsManager.nextWeek()">後一週 ►</button>
+                    <button onclick="StatsManager.currentWeek()">回到本週</button>
+                </div>
+                <canvas id="weekly-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- 挑戰頁：遊戲化 -->
+        <div id="challenges" class="page">
+            <h2>加班挑戰</h2>
+            <p>積分：<span id="points">0</span></p>
+            <p>徽章：<span id="badges">無</span></p>
+            <button id="claim-all-btn" style="display: none;" onclick="ChallengeManager.claimAllRewards()">一鍵領取</button>
+            <div id="challenge-list"></div>
+            <div id="challenge-animation" class="challenge-animation"></div>
+        </div>
+
+        <!-- 設定頁：個性化 -->
+        <div id="settings" class="page">
+            <h2>設定</h2>
+            <label>選擇主題顏色：
+                <select id="theme-color">
+                    <option value="default">預設（橙色）</option>
+                    <option value="blue">藍色</option>
+                    <option value="green">綠色</option>
+                </select>
+            </label>
+            <button onclick="saveSettings()">保存設定</button>
+            <button onclick="resetAllData()" class="reset-btn">重設所有數據</button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
